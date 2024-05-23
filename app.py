@@ -10,12 +10,31 @@ from phi.utils.log import logger
 from assistant import get_groq_assistant  # type: ignore
 
 st.set_page_config(
-    page_title="Groq RAG",
-    page_icon=":orange_heart:",
+    page_title="ISW RAG",
+    page_icon=":books:",
 )
 st.title("RAG with Llama3 on Groq")
-st.markdown("##### :orange_heart: built using [phidata](https://github.com/phidatahq/phidata)")
+st.markdown("Built at ISW")
 
+import os
+
+from groq import Groq
+
+client = Groq(
+    api_key=os.environ.get("GROQ_API_KEY"),
+)
+
+chat_completion = client.chat.completions.create(
+    messages=[
+        {
+            "role": "user",
+            "content": "Explain the importance of fast language models",
+        }
+    ],
+    model="llama3-8b-8192",
+)
+
+print(chat_completion.choices[0].message.content)
 
 def restart_assistant():
     st.session_state["rag_assistant"] = None
